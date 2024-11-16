@@ -181,7 +181,7 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
         <thead className='border-be border-bs'>
           <tr>
             <th className='uppercase bg-transparent'>Date</th>
-            <th className='uppercase bg-transparent'>Category</th>
+            <th className='uppercase bg-transparent w-44'>Category</th>
             <th className='uppercase bg-transparent text-end'>Type</th>
             <th className='uppercase bg-transparent text-end'>Amount</th>
             <th className='uppercase bg-transparent text-end'>Actions</th>
@@ -192,7 +192,8 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
           {data.map((row: TabContentType, index: number) => (
             <tr key={index}>
               <td>{row.date}</td>
-              <td>
+
+              <td className='w-44'>
                 <div className='flex items-center gap-3'>
                   <CustomAvatar skin='light' color={`${productCategoryObj[row.category]?.color}`} size={30}>
                     <i className={classnames(`${productCategoryObj[row.category]?.icon}`, 'text-lg')} />
@@ -200,9 +201,11 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
                   <Typography color='text.primary'>{row.category}</Typography>
                 </div>
               </td>
+
               <td className='text-end'>
                 <Chip label={row.chipLabel} color={row.chipColor} size='small' variant='tonal' />
               </td>
+
               <td className='font-medium text-end'>{row.price}</td>
 
               <td className='font-medium text-end'>
@@ -276,6 +279,7 @@ const TopReferralSources = ({
           </Button>
         }
       />
+
       <TabContext value={value}>
         <TabList
           variant='scrollable'

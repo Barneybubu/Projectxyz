@@ -148,7 +148,13 @@ const productStatusObj: productStatusType = {
 // Column Definitions
 const columnHelper = createColumnHelper<ProductWithActionsType>()
 
-const ProductListTable2 = ({ productData }: { productData?: ProductType[] }) => {
+const ProductListTable2 = ({
+  setOpen,
+  productData
+}: {
+  productData?: ProductType[]
+  setOpen: (open: boolean) => void
+}) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
   const [data, setData] = useState(...[productData])
@@ -320,10 +326,10 @@ const ProductListTable2 = ({ productData }: { productData?: ProductType[] }) => 
             >
               Export
             </Button>
+
             <Button
               variant='contained'
-              component={Link}
-              href={getLocalizedUrl('/apps/ecommerce/products/add', locale as Locale)}
+              onClick={() => setOpen(true)}
               startIcon={<i className='ri-add-line' />}
               className='max-sm:is-full is-auto'
             >

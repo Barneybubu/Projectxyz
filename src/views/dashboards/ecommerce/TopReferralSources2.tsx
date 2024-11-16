@@ -177,13 +177,13 @@ const productCategoryObj: ProductCategoryType = {
 const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
   return (
     <div className='overflow-x-auto'>
-      <table className={tableStyles.table}>
+      <table className={`${tableStyles.table} table-fixed`}>
         <thead className='border-be border-bs'>
           <tr>
             <th className='uppercase bg-transparent'>Date</th>
-            <th className='uppercase bg-transparent'>Category</th>
-            <th className='uppercase bg-transparent text-end'>Type</th>
-            <th className='uppercase bg-transparent text-end'>Amount</th>
+            <th className='uppercase bg-transparent w-2/6'>Category</th>
+            <th className='uppercase bg-transparent text-font'>Type</th>
+            <th className='uppercase bg-transparent text-center'>Amount</th>
             <th className='uppercase bg-transparent text-end'>Actions</th>
           </tr>
         </thead>
@@ -192,20 +192,26 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
           {data.map((row: TabContentType, index: number) => (
             <tr key={index}>
               <td>{row.date}</td>
-              <td>
+
+              <td className='w-49'>
                 <div className='flex items-center gap-3'>
                   <CustomAvatar skin='light' color={`${productCategoryObj[row.category]?.color}`} size={30}>
                     <i className={classnames(`${productCategoryObj[row.category]?.icon}`, 'text-lg')} />
                   </CustomAvatar>
-                  <Typography color='text.primary'>{row.category}</Typography>
+                    <div>
+                      <Typography color='text.primary'>{row.category}</Typography>
+                      <Typography variant='body2'>{row.category}</Typography>
+                    </div>
                 </div>
               </td>
-              <td className='text-end'>
+
+              <td className='text-font'>
                 <Chip label={row.chipLabel} color={row.chipColor} size='small' variant='tonal' />
               </td>
-              <td className='font-medium text-end'>{row.price}</td>
 
-              <td className='font-medium text-end'>
+              <td className='font-medium text-center'>{row.price}</td>
+
+              <td className='font-medium text-center'>
                 <div className='flex items-center justify-end'>
                   <IconButton size='small'>
                     <i className='ri-edit-box-line text-[22px] text-textSecondary' />
@@ -276,6 +282,7 @@ const TopReferralSources = ({
           </Button>
         }
       />
+
       <TabContext value={value}>
         <TabList
           variant='scrollable'

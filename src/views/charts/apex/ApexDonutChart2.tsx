@@ -233,7 +233,7 @@ const ApexDonutChart = () => {
         <table className={tableStyles.table}>
           <thead className='uppercase'>
             <tr className='border-be'>
-              <th className='bg-transparent font-normal bs-[2.875rem]'>Category</th>
+              <th className='bg-transparent font-normal bs-[2.875rem]'>Country</th>
               <th className='bg-transparent text-center font-normal bs-[2.875rem]'>amount</th>
               <th className='bg-transparent text-end font-normal bs-[2.875rem]'>percent</th>
             </tr>

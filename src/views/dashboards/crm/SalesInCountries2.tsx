@@ -40,48 +40,61 @@ const donutColors = {
 
 type DataType = {
   country: string
-  sales: string
-  trend: string
-  trendNumber: string
+  imgAlt: string
+  imgSrc: string
+  subscribers: string
+  percent: string
+  trend: 'up' | 'down'
 }
 
-// Vars
 const data: DataType[] = [
   {
-    country: 'Australia',
-    sales: '18,879',
-    trendNumber: '15%',
-    trend: 'down'
-  },
-  {
-    country: 'Canada',
-    sales: '10,357',
-    trendNumber: '85%',
+    country: 'USA',
+    imgAlt: 'USA',
+    imgSrc: '/images/cards/us.png',
+    subscribers: '22,450',
+    percent: '+22.5%',
     trend: 'up'
   },
   {
     country: 'India',
-    sales: '4,860',
-    trendNumber: '88%',
-    trend: 'up'
-  },
-  {
-    country: 'US',
-    sales: '899',
-    trendNumber: '16%',
-    trend: 'down'
-  },
-  {
-    country: 'Japan',
-    sales: '43',
-    trendNumber: '35%',
+    imgAlt: 'India',
+    imgSrc: '/images/cards/india.png',
+    subscribers: '28,568',
+    percent: '+28.5%',
     trend: 'up'
   },
   {
     country: 'Brazil',
-    sales: '18',
-    trendNumber: '12%',
+    imgAlt: 'Brazil',
+    imgSrc: '/images/cards/brazil.png',
+    subscribers: '8,457',
+    percent: '-8.3%',
+    trend: 'down'
+  },
+  {
+    country: 'Australia',
+    imgAlt: 'Australia',
+    imgSrc: '/images/cards/australia.png',
+    subscribers: '2,850',
+    percent: '+15.2%',
     trend: 'up'
+  },
+  {
+    country: 'France',
+    imgAlt: 'France',
+    imgSrc: '/images/cards/france.png',
+    subscribers: '1,930',
+    percent: '-12.6%',
+    trend: 'down'
+  },
+  {
+    country: 'China',
+    imgAlt: 'China',
+    imgSrc: '/images/cards/china.png',
+    subscribers: '852',
+    percent: '-2.4%',
+    trend: 'down'
   }
 ]
 
@@ -214,26 +227,41 @@ const SalesInCountries2 = () => {
 
       <CardContent className='flex flex-col gap-4'>
         <div className='flex flex-col gap-1.5'>
-          <AppReactApexCharts type='donut' height={270} width='100%' series={[85, 16, 50, 50]} options={options} />
+          <AppReactApexCharts type='donut' height={350} width='100%' series={[85, 16, 50, 50]} options={options} />
         </div>
 
         <div>
           <table className={tableStyles.table}>
+            <thead className='uppercase'>
+              <tr className='border-be'>
+                <th className='bg-transparent font-normal'>Country</th>
+                <th className='bg-transparent text-center font-normal bs-[2.875rem]'>amount</th>
+                <th className='bg-transparent text-end font-normal bs-[2.875rem]'>percent</th>
+              </tr>
+            </thead>
+
             <tbody>
               {data.map((row, index) => (
                 <tr key={index} className='first:border-bs'>
                   <td className='!pis-0'>
-                    <Typography color='text.primary'>{row.country}</Typography>
+                    <div className='flex items-center gap-4'>
+                      <img width={30} height={30} alt={row.imgAlt} src={row.imgSrc} />
+                      <Typography color='text.primary' className='font-medium'>
+                        {row.country}
+                      </Typography>
+                    </div>
                   </td>
+
                   <td className='text-end'>
                     <Typography color='text.primary' className='font-medium'>
-                      {row.sales}
+                      {row.subscribers}
                     </Typography>
                   </td>
+
                   <td className='!pie-0'>
                     <div className='flex gap-2 items-center justify-end !pie-0'>
                       <Typography color='text.primary' className='font-medium'>
-                        {row.trendNumber}
+                        {row.percent}
                       </Typography>
                       <i
                         className={classnames(

@@ -1,6 +1,8 @@
 // Next Imports
 import { useState } from 'react'
 
+import type { SyntheticEvent } from 'react'
+
 import dynamic from 'next/dynamic'
 
 // MUI Imports
@@ -8,7 +10,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
-import { lighten, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 
 // Third-party Imports
 import type { ApexOptions } from 'apexcharts'
@@ -27,54 +29,74 @@ import tableStyles from '@core/styles/table.module.css'
 // Styled Component Imports
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-type DataType = {
-  country: string
-  sales: string
-  trend: string
-  trendNumber: string
+// Vars
+const donutColors = {
+  series1: '#fdd835',
+  series2: '#00d4bd',
+  series3: '#826bf8',
+  series4: '#32baff',
+  series5: '#ffa1a1'
 }
 
-// Vars
+type DataType = {
+  country: string
+  imgAlt: string
+  imgSrc: string
+  subscribers: string
+  percent: string
+  trend: 'up' | 'down'
+}
+
 const data: DataType[] = [
   {
-    country: 'Australia',
-    sales: '18,879',
-    trendNumber: '15%',
-    trend: 'down'
-  },
-  {
-    country: 'Canada',
-    sales: '10,357',
-    trendNumber: '85%',
+    country: 'USA',
+    imgAlt: 'USA',
+    imgSrc: '/images/cards/us.png',
+    subscribers: '22,450',
+    percent: '+22.5%',
     trend: 'up'
   },
   {
     country: 'India',
-    sales: '4,860',
-    trendNumber: '88%',
-    trend: 'up'
-  },
-  {
-    country: 'US',
-    sales: '899',
-    trendNumber: '16%',
-    trend: 'down'
-  },
-  {
-    country: 'Japan',
-    sales: '43',
-    trendNumber: '35%',
+    imgAlt: 'India',
+    imgSrc: '/images/cards/india.png',
+    subscribers: '28,568',
+    percent: '+28.5%',
     trend: 'up'
   },
   {
     country: 'Brazil',
-    sales: '18',
-    trendNumber: '12%',
+    imgAlt: 'Brazil',
+    imgSrc: '/images/cards/brazil.png',
+    subscribers: '8,457',
+    percent: '-8.3%',
+    trend: 'down'
+  },
+  {
+    country: 'Australia',
+    imgAlt: 'Australia',
+    imgSrc: '/images/cards/australia.png',
+    subscribers: '2,850',
+    percent: '+15.2%',
     trend: 'up'
+  },
+  {
+    country: 'France',
+    imgAlt: 'France',
+    imgSrc: '/images/cards/france.png',
+    subscribers: '1,930',
+    percent: '-12.6%',
+    trend: 'down'
+  },
+  {
+    country: 'China',
+    imgAlt: 'China',
+    imgSrc: '/images/cards/china.png',
+    subscribers: '852',
+    percent: '-2.4%',
+    trend: 'down'
   }
 ]
-
-const deliveryExceptionsChartSeries = [13, 25, 22, 40]
 
 const SalesInCountries2 = () => {
   // States
@@ -84,79 +106,95 @@ const SalesInCountries2 = () => {
     setValue(newValue)
   }
 
+  // Vars
+  const textSecondary = 'var(--mui-palette-text-secondary)'
+
   // Hooks
   const theme = useTheme()
 
   const options: ApexOptions = {
-    // labels: ['Incorrect address', 'Weather conditions', 'Federal Holidays', 'Damage during transit'],
-    stroke: {
-      width: 0
-    },
-    colors: [
-      'var(--mui-palette-success-main)',
-      lighten(theme.palette.success.main, 0.2),
-      lighten(theme.palette.success.main, 0.4),
-      lighten(theme.palette.success.main, 0.6)
-    ],
+    stroke: { width: 0 },
+    labels: ['Operational', 'Networking', 'Hiring', 'R&D'],
+    colors: [donutColors.series1, donutColors.series5, donutColors.series3, donutColors.series2],
     dataLabels: {
-      enabled: false,
-      formatter(val: string) {
-        return `${Number.parseInt(val)}%`
-      }
+      enabled: true,
+      formatter: (val: string) => `${parseInt(val, 10)}%`
     },
     legend: {
       show: false,
-      position: 'bottom',
-      offsetY: 10,
-      markers: {
-        width: 8,
-        height: 8,
-        offsetY: 1,
-        offsetX: theme.direction === 'rtl' ? 8 : -4
-      },
-      itemMargin: {
-        horizontal: 15,
-        vertical: 5
-      },
       fontSize: '13px',
-      fontWeight: 400,
-      labels: {
-        colors: 'var(--mui-palette-text-primary)',
-        useSeriesColors: false
-      }
-    },
-    grid: {
-      padding: {
-        top: 15
+      position: 'bottom',
+      markers: {
+        offsetX: theme.direction === 'rtl' ? 7 : -4
+      },
+      labels: { colors: textSecondary },
+      itemMargin: {
+        horizontal: 9
       }
     },
     plotOptions: {
       pie: {
         donut: {
-          size: '75%',
           labels: {
             show: true,
-            value: {
-              fontSize: '24px',
-              color: 'var(--mui-palette-text-primary)',
-              fontWeight: 500,
-              offsetY: -20
+            name: {
+              fontSize: '1.2rem'
             },
-            name: { offsetY: 20 },
+            value: {
+              fontSize: '1.2rem',
+              color: textSecondary,
+              formatter: (val: string) => `${parseInt(val, 10)}`
+            },
             total: {
               show: true,
-              fontSize: '0.9375rem',
-              fontWeight: 400,
-              label: 'AVG. Exceptions',
-              color: 'var(--mui-palette-text-secondary)',
-              formatter() {
-                return '30%'
+              fontSize: '1.2rem',
+              label: 'Operational',
+              formatter: () => '31%',
+              color: 'var(--mui-palette-text-primary)'
+            }
+          }
+        }
+      }
+    },
+    responsive: [
+      {
+        breakpoint: 992,
+        options: {
+          chart: {
+            height: 380
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      },
+      {
+        breakpoint: 576,
+        options: {
+          chart: {
+            height: 320
+          },
+          plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  name: {
+                    fontSize: '1rem'
+                  },
+                  value: {
+                    fontSize: '1rem'
+                  },
+                  total: {
+                    fontSize: '1rem'
+                  }
+                }
               }
             }
           }
         }
       }
-    }
+    ]
   }
 
   return (
@@ -189,32 +227,41 @@ const SalesInCountries2 = () => {
 
       <CardContent className='flex flex-col gap-4'>
         <div className='flex flex-col gap-1.5'>
-          <AppReactApexCharts
-            type='donut'
-            height={237}
-            width='100%'
-            series={deliveryExceptionsChartSeries}
-            options={options}
-          />
+          <AppReactApexCharts type='donut' height={350} width='100%' series={[85, 16, 50, 50]} options={options} />
         </div>
 
         <div>
           <table className={tableStyles.table}>
+            <thead className='uppercase'>
+              <tr className='border-be'>
+                <th className='bg-transparent font-normal'>Country</th>
+                <th className='bg-transparent text-center font-normal bs-[2.875rem]'>amount</th>
+                <th className='bg-transparent text-end font-normal bs-[2.875rem]'>percent</th>
+              </tr>
+            </thead>
+
             <tbody>
               {data.map((row, index) => (
                 <tr key={index} className='first:border-bs'>
                   <td className='!pis-0'>
-                    <Typography color='text.primary'>{row.country}</Typography>
+                    <div className='flex items-center gap-4'>
+                      <img width={30} height={30} alt={row.imgAlt} src={row.imgSrc} />
+                      <Typography color='text.primary' className='font-medium'>
+                        {row.country}
+                      </Typography>
+                    </div>
                   </td>
+
                   <td className='text-end'>
                     <Typography color='text.primary' className='font-medium'>
-                      {row.sales}
+                      {row.subscribers}
                     </Typography>
                   </td>
+
                   <td className='!pie-0'>
                     <div className='flex gap-2 items-center justify-end !pie-0'>
                       <Typography color='text.primary' className='font-medium'>
-                        {row.trendNumber}
+                        {row.percent}
                       </Typography>
                       <i
                         className={classnames(

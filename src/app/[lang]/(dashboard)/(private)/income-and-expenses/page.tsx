@@ -13,6 +13,8 @@ import Tab from '@mui/material/Tab'
 
 import TabContext from '@mui/lab/TabContext'
 
+import AddProductModal from '@/components/dialogs/add-product'
+
 import AppReactDatepicker from '@/libs/styles/AppReactDatepicker'
 import LogisticsShipmentStatistics from '@/views/apps/logistics/dashboard/LogisticsShipmentStatistics'
 import UserListCards2 from '@/views/apps/user/list/UserListCards2'
@@ -23,7 +25,6 @@ import SalesInCountries2 from '@/views/dashboards/crm/SalesInCountries2'
 import CustomTabList from '@core/components/mui/TabList2'
 
 // Data Imports
-import { db as eCommerceData } from '@/fake-db/apps/ecommerce'
 import ProductListTable2 from '@/views/apps/ecommerce/products/list/ProductListTable2'
 
 import type { UserDataType } from '@components/card-statistics/HorizontalWithSubtitle'
@@ -66,10 +67,8 @@ const userData: UserDataType[] = [
 ]
 
 const page = () => {
-  // Vars
-  const data = eCommerceData
-
   // States
+  const [open, setOpen] = useState<boolean>(false)
   const [startDate, setStartDate] = useState<Date | null | undefined>(new Date())
   const [endDate, setEndDate] = useState<Date | null | undefined>(addDays(new Date(), 15))
 
@@ -172,20 +171,22 @@ const page = () => {
       </Grid>
 
       <Grid item xs={12} md={8}>
-        <LogisticsShipmentStatistics />
+        <Grid item xs={12} className='mb-5'>
+          <LogisticsShipmentStatistics />
+        </Grid>
+
+        <ProductListTable2 setOpen={setOpen} />
       </Grid>
 
-      <Grid item xs={12} md={4}>
-        <SalesInCountries2 />
-      </Grid>
+      <Grid item xs={12} md={4} spacing={6}>
+        <Grid item xs={12} className='mb-5'>
+          <SalesInCountries2 />
+        </Grid>
 
-      <Grid item xs={12} md={8}>
-        <ProductListTable2 productData={data?.products} />
-      </Grid>
-
-      <Grid item xs={12} md={4}>
         <PaymentHistory2 />
       </Grid>
+
+      {open && <AddProductModal open={open} setOpen={setOpen} />}
     </Grid>
   )
 }
